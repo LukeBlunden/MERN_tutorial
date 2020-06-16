@@ -6,11 +6,12 @@ import { deleteItem, getItems } from "../actions/itemActions";
 
 const ShoppingList = (props) => {
   const items = useSelector((state) => state.item.items);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getItems())
-  }, [])
+    dispatch(getItems());
+  }, [dispatch]);
 
   return (
     <Container>
@@ -19,14 +20,16 @@ const ShoppingList = (props) => {
           {items.map((item) => (
             <CSSTransition key={item._id} timeout={500} classNames="fade">
               <ListGroupItem>
-                <Button
-                  className="remove-btn"
-                  color="danger"
-                  size="sm"
-                  onClick={() => dispatch(deleteItem(item._id))}
-                >
-                  &times;
-                </Button>
+                {isAuthenticated ? (
+                  <Button
+                    className="remove-btn"
+                    color="danger"
+                    size="sm"
+                    onClick={() => dispatch(deleteItem(item._id))}
+                  >
+                    &times;
+                  </Button>
+                ) : null}
                 {item.name}
               </ListGroupItem>
             </CSSTransition>

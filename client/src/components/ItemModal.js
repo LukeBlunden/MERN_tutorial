@@ -15,7 +15,7 @@ import { addItem } from "../actions/itemActions";
 const ItemModal = (props) => {
   const [modal, setModal] = useState(false);
   const [name, setName] = useState("");
-  const items = useSelector((state) => state.item.items);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
   const onSubmit = (e) => {
@@ -27,13 +27,17 @@ const ItemModal = (props) => {
 
   return (
     <div>
-      <Button
-        color="dark"
-        style={{ marginBottom: "2rem" }}
-        onClick={() => setModal(!modal)}
-      >
-        Add item
-      </Button>
+      {isAuthenticated ? (
+        <Button
+          color="dark"
+          style={{ marginBottom: "2rem" }}
+          onClick={() => setModal(!modal)}
+        >
+          Add item
+        </Button>
+      ) : (
+        <h4 className="mb-3 ml-4">Please login to manage items</h4>
+      )}
 
       <Modal isOpen={modal} toggle={() => setModal(!modal)}>
         <ModalHeader toggle={() => setModal(!modal)}>
